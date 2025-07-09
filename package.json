@@ -1,14 +1,15 @@
 {
   "name": "carolina-bot",
   "version": "1.0.0",
-  "description": "Bot automatizado conectado a la API de OpenAI sin conexión QR",
+  "description": "Bot IA conectado con Gupshup y OpenAI",
   "main": "index.js",
-  "type": "commonjs",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "dotenv": "^16.3.1",
-    "openai": "^4.23.0"
+    "axios": "^1.6.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "node-fetch": "^3.3.2"
   }
 }
