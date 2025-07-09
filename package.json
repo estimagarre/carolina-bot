@@ -1,16 +1,14 @@
 {
   "name": "carolina-bot",
   "version": "1.0.0",
-  "description": "Bot de WhatsApp para el depósito Reformante",
+  "description": "Bot automatizado conectado a la API de OpenAI sin conexión QR",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "@whiskeysockets/baileys": "^6.5.0",
     "dotenv": "^16.3.1",
-    "openai": "^4.23.0",
-    "qrcode-terminal": "^0.12.0"
+    "openai": "^4.23.0"
   }
 }
