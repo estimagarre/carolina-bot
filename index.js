@@ -1,12 +1,5 @@
-const {
-  default: makeWASocket,
-  fetchLatestBaileysVersion,
-  DisconnectReason,
-  useMultiFileAuthState,
-} = require("@whiskeysockets/baileys");
-
+const express = require("express");
 const fs = require("fs");
-const qrcode = require("qrcode-terminal");
 const { obtenerRespuestaIA } = require("./openai");
 
 const productos = JSON.parse(fs.readFileSync("productos_reformante.json", "utf8"));
@@ -14,8 +7,6 @@ const historialClientes = {};
 const pedidosAcumulados = {};
 const yaCotizado = {};
 const estadoCliente = {};
-
-let socketActivo = null;
 
 const datosCuenta = `🏦 Datos para el pago:
 Banco: Bancolombia
@@ -40,7 +31,6 @@ function corregirErroresOrto(texto) {
     .replace(/arsos/g, "argos")
     .replace(/cotisar/g, "cotizar")
     .replace(/mececito/g, "necesito")
-    .replace(/semento/g, "cemento")
     .replace(/blokeo/g, "bloque");
 }
 
@@ -52,24 +42,18 @@ function analizarProductoDesdeTexto(texto) {
   for (const producto of productos) {
     const nombreProducto = limpiarTexto(producto.nombre);
     const palabrasClave = nombreProducto.split(" ");
-
     const todasClave = palabrasClave.every(p => normalizado.includes(p));
     if (!todasClave) continue;
 
     const cantidadMatch = normalizado.match(
-      new RegExp(`(\d+)\s+(de\s+)?${palabrasClave[0]}`, "i")
+      new RegExp(`(\\d+)\\s+(de\\s+)?${palabrasClave[0]}`, "i")
     );
     const cantidad = cantidadMatch ? parseInt(cantidadMatch[1]) : 1;
 
     if (!nombresDetectados.has(producto.nombre)) {
       const precioUnitario = Math.round(producto.precio * 1.19);
       const total = precioUnitario * cantidad;
-      resultados.push({
-        nombre: producto.nombre,
-        cantidad,
-        precioUnitario,
-        total
-      });
+      resultados.push({ nombre: producto.nombre, cantidad, precioUnitario, total });
       nombresDetectados.add(producto.nombre);
     }
   }
@@ -100,111 +84,64 @@ function generarResumenPedido(pedido) {
   return `🤲 Cotización actual:\n${lineas.join("\n")}\n💰 Total con IVA incluido: $${total.toLocaleString()}`;
 }
 
-async function iniciarBot() {
-  if (socketActivo) return;
-  const { version } = await fetchLatestBaileysVersion();
-  const { state, saveCreds } = await useMultiFileAuthState("auth_info_baileys");
+const app = express();
+app.use(express.json());
 
-  const sock = makeWASocket({ version, printQRInTerminal: false, auth: state });
-  socketActivo = sock;
+app.post("/webhook", async (req, res) => {
+  const body = req.body;
+  const numero = body.sender || body.phone;
+  const textoOriginal = body.message?.text || body.payload?.text || "";
 
-  sock.ev.on("connection.update", ({ connection, lastDisconnect, qr }) => {
-    if (qr) {
-      console.clear();
-      console.log("📲 Escanea este código QR para conectar:");
-      qrcode.generate(qr, { small: true });
-    }
-    if (connection === "close") {
-      const shouldReconnect = lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut;
-      if (shouldReconnect) iniciarBot();
-    }
-    if (connection === "open") {
-      console.log("✅ Bot conectado correctamente a WhatsApp.");
-    }
-  });
+  if (!numero || !textoOriginal) return res.sendStatus(200);
 
-  sock.ev.on("messages.upsert", async ({ messages }) => {
-    const mensaje = messages[0];
-    if (!mensaje.message || mensaje.key.fromMe) return;
+  if (!historialClientes[numero]) historialClientes[numero] = [];
+  if (!pedidosAcumulados[numero]) pedidosAcumulados[numero] = [];
+  if (!yaCotizado[numero]) yaCotizado[numero] = [];
+  if (!estadoCliente[numero]) estadoCliente[numero] = "inicio";
 
-    const numero = mensaje.key.remoteJid;
-    const textoOriginal = mensaje.message.conversation || mensaje.message.extendedTextMessage?.text;
-    const imagenRecibida = mensaje.message.imageMessage;
+  const texto = corregirErroresOrto(textoOriginal);
+  const textoClave = limpiarTexto(texto);
+  const yaRespondido = yaCotizado[numero].includes(textoClave);
+  const ultimoMensaje = historialClientes[numero].slice(-1)[0]?.content?.trim().toLowerCase();
+  if (textoClave === ultimoMensaje) return res.sendStatus(200);
 
-    if (!historialClientes[numero]) historialClientes[numero] = [];
-    if (!pedidosAcumulados[numero]) pedidosAcumulados[numero] = [];
-    if (!yaCotizado[numero]) yaCotizado[numero] = [];
-    if (!estadoCliente[numero]) estadoCliente[numero] = "inicio";
+  let respuesta = "";
 
-    if (mensaje.message.audioMessage || mensaje.message.voiceMessage) {
-      await sock.sendMessage(numero, { text: "📢 Por ahora no escucho audios. ¡Escríbeme por favor!" });
-      return;
-    }
-
-    if (imagenRecibida && estadoCliente[numero] === "esperando_comprobante") {
-      estadoCliente[numero] = "esperando_direccion";
-      await sock.sendMessage(numero, {
-        text: "🏠 Gracias por enviar el comprobante. ¿Me confirmas tu dirección exacta para organizar el despacho? Si estás cerca lo llevamos hoy mismo. Si estás lejos, coordinamos con el conductor. ✈️"
-      });
-      return;
-    }
-
-    if (!textoOriginal) return;
-    const texto = corregirErroresOrto(textoOriginal);
-    const textoClave = limpiarTexto(texto);
-    const yaRespondido = yaCotizado[numero].includes(textoClave);
-    const ultimoMensaje = historialClientes[numero].slice(-1)[0]?.content?.trim().toLowerCase();
-    if (textoClave === ultimoMensaje) return;
-
-    if (/(me los despacha|envíemelos|tráemelos|enviame|mandalos)/i.test(texto)) {
-      if (pedidosAcumulados[numero].length > 0) {
-        estadoCliente[numero] = "esperando_comprobante";
-        await sock.sendMessage(numero, {
-          text: "🚚 Apenas verifiquemos el comprobante de pago, organizamos el pedido. ¡Puedes enviarlo cuando gustes!"
-        });
-        return;
-      }
-    }
-
-    if (/(quiero comprar|dame la cuenta|cómo pago|necesito pagar|ya transferí|transferencia)/i.test(texto)) {
+  if (/(me los despacha|envíemelos|tráemelos|enviame|mandalos)/i.test(texto)) {
+    if (pedidosAcumulados[numero].length > 0) {
       estadoCliente[numero] = "esperando_comprobante";
-      await sock.sendMessage(numero, { text: datosCuenta });
-      return;
+      respuesta = "🚚 Apenas verifiquemos el comprobante de pago, organizamos el pedido. ¡Puedes enviarlo cuando gustes!";
     }
-
-    if (estadoCliente[numero] === "pedido_confirmado") {
-      await sock.sendMessage(numero, { text: "✅ Ya tenemos tu pedido confirmado. Si necesitas algo más, aquí estoy." });
-      return;
-    }
-
+  } else if (/(quiero comprar|dame la cuenta|cómo pago|necesito pagar|ya transferí|transferencia)/i.test(texto)) {
+    estadoCliente[numero] = "esperando_comprobante";
+    respuesta = datosCuenta;
+  } else if (estadoCliente[numero] === "pedido_confirmado") {
+    respuesta = "✅ Ya tenemos tu pedido confirmado. Si necesitas algo más, aquí estoy.";
+  } else {
     const sugerencia = sugerirOpcionesSiProductoGenerico(texto);
     if (sugerencia) {
       historialClientes[numero].push({ role: "assistant", content: sugerencia });
-      await sock.sendMessage(numero, { text: sugerencia });
-      return;
+      respuesta = sugerencia;
+    } else {
+      const infoProductos = analizarProductoDesdeTexto(texto);
+      if (infoProductos && !yaRespondido) {
+        const nombresExistentes = new Set(pedidosAcumulados[numero].map(p => p.nombre));
+        const nuevosFiltrados = infoProductos.filter(p => !nombresExistentes.has(p.nombre));
+        pedidosAcumulados[numero].push(...nuevosFiltrados);
+        yaCotizado[numero].push(textoClave);
+        respuesta = generarResumenPedido(pedidosAcumulados[numero]);
+      } else {
+        historialClientes[numero].push({ role: "user", content: texto });
+        respuesta = await obtenerRespuestaIA(historialClientes[numero]);
+      }
     }
+  }
 
-    const infoProductos = analizarProductoDesdeTexto(texto);
-    if (infoProductos && !yaRespondido) {
-      const nombresExistentes = new Set(pedidosAcumulados[numero].map(p => p.nombre));
-      const nuevosFiltrados = infoProductos.filter(p => !nombresExistentes.has(p.nombre));
+  historialClientes[numero].push({ role: "assistant", content: respuesta });
+  return res.json({ reply: respuesta });
+});
 
-      pedidosAcumulados[numero].push(...nuevosFiltrados);
-      yaCotizado[numero].push(textoClave);
-
-      const resumen = generarResumenPedido(pedidosAcumulados[numero]);
-      historialClientes[numero].push({ role: "assistant", content: resumen });
-      await sock.sendMessage(numero, { text: resumen });
-      return;
-    }
-
-    historialClientes[numero].push({ role: "user", content: texto });
-    const respuesta = await obtenerRespuestaIA(historialClientes[numero]);
-    historialClientes[numero].push({ role: "assistant", content: respuesta });
-    await sock.sendMessage(numero, { text: respuesta });
-  });
-
-  sock.ev.on("creds.update", saveCreds);
-}
-
-iniciarBot();
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`✅ Servidor funcionando en el puerto ${PORT}`);
+});
