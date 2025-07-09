@@ -1,82 +1,35 @@
-const { obtenerRespuestaIA } = require('./openai');
-const {
-  makeWASocket,
-  useMultiFileAuthState,
-  fetchLatestBaileysVersion,
-  DisconnectReason,
-} = require('@whiskeysockets/baileys');
-const { Boom } = require('@hapi/boom');
-const fs = require('fs');
+// openai.js (usando solo la API de OpenAI sin Baileys ni QR)
 
-const historialConversaciones = {};
+const { Configuration, OpenAIApi } = require("openai");
+require("dotenv").config();
 
-async function iniciarBot() {
-  console.log("📦 Verificando archivos de sesión...");
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
-  const sessionPath = './auth_info_baileys';
-  const credsFile = `${sessionPath}/creds.json`;
+const openai = new OpenAIApi(configuration);
 
-  if (!fs.existsSync(sessionPath)) {
-    fs.mkdirSync(sessionPath, { recursive: true });
+// Historial de conversaciones en memoria (puedes adaptar a base de datos si deseas)
+const historial = {};
+
+// Función principal para obtener respuestas
+async function obtenerRespuestaIA(mensajes, numero) {
+  if (!historial[numero]) {
+    historial[numero] = [];
   }
 
-  const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
-  const { version } = await fetchLatestBaileysVersion();
+  historial[numero] = [...historial[numero], ...mensajes].slice(-10); // Máximo 10 últimos intercambios
 
-  const sock = makeWASocket({
-    version,
-    printQRInTerminal: true,
-    auth: state,
+  const response = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages: historial[numero],
+    temperature: 0.7,
   });
 
-  sock.ev.on('messages.upsert', async ({ messages }) => {
-    const msg = messages[0];
-    if (!msg.message || msg.key.fromMe) return;
+  const respuesta = response.data.choices[0].message.content;
+  historial[numero].push({ role: 'assistant', content: respuesta });
 
-    const numero = msg.key.remoteJid;
-    const mensajeUsuario = msg.message.conversation || msg.message.extendedTextMessage?.text || '';
-
-    console.log(`💬 Mensaje de ${numero}: ${mensajeUsuario}`);
-
-    if (!historialConversaciones[numero]) {
-      historialConversaciones[numero] = [];
-    }
-
-    historialConversaciones[numero].push({ role: 'user', content: mensajeUsuario });
-
-    try {
-      const respuestaIA = await obtenerRespuestaIA(historialConversaciones[numero]);
-      historialConversaciones[numero].push({ role: 'assistant', content: respuestaIA });
-
-      await sock.sendMessage(numero, { text: respuestaIA });
-    } catch (error) {
-      console.error('❌ Error al procesar mensaje:', error);
-      await sock.sendMessage(numero, { text: 'Lo siento, hubo un error procesando tu mensaje.' });
-    }
-  });
-
-  sock.ev.on('creds.update', saveCreds);
-
-  sock.ev.on('connection.update', (update) => {
-    const { connection, lastDisconnect } = update;
-
-    if (connection === 'close') {
-      const shouldReconnect =
-        lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut;
-
-      console.log('🔌 Conexión cerrada. Reintentando:', shouldReconnect);
-
-      if (shouldReconnect) {
-        iniciarBot(); // Reintenta conexión
-      } else {
-        console.log('📴 Sesión cerrada completamente. Borra ./auth_info_baileys para reiniciar.');
-      }
-    }
-
-    if (connection === 'open') {
-      console.log('✅ Bot conectado exitosamente a WhatsApp');
-    }
-  });
+  return respuesta;
 }
 
-iniciarBot();
+module.exports = { obtenerRespuestaIA };
