@@ -1,0 +1,790 @@
+[
+  {
+    "nombre": "TORNILLO PUNTA BROCA AVELLANADO UNIDAD",
+    "precio": 100
+  },
+  {
+    "nombre": "ESTRIBOS 30 X 40",
+    "precio": 3900.0
+  },
+  {
+    "nombre": "ESTRIBOS 20 X 30",
+    "precio": 2900.0
+  },
+  {
+    "nombre": "CHAZO 5/16 X UND",
+    "precio": 50.0
+  },
+  {
+    "nombre": "REMACHOE CIEGO 4-2 (1/8-1/4) X UND",
+    "precio": 50.0
+  },
+  {
+    "nombre": "CHAZO 1/4 X UND",
+    "precio": 50.0
+  },
+  {
+    "nombre": "TORNILLO PUNTA BROCA AVELLANADO CON ALAS 3/4 X UND",
+    "precio": 150.0
+  },
+  {
+    "nombre": "ARANDELA PLANA GALVANIZADA  3/16",
+    "precio": 50.0
+  },
+  {
+    "nombre": "ALAMBRE QUEMADO RECOCIDO CALIBRE 17 X 1 KG",
+    "precio": 7000.0
+  },
+  {
+    "nombre": "CHAZO 3/8 X UND",
+    "precio": 100.0
+  },
+  {
+    "nombre": "TORNILLO AUTOROSC. CAB PAN 8 X 1  1/2  X UND",
+    "precio": 100.0
+  },
+  {
+    "nombre": "CHAZO 3/16 X UND",
+    "precio": 50.0
+  },
+  {
+    "nombre": "LIJA DE AGUA G.150 x UND OMEGA",
+    "precio": 1600.0
+  },
+  {
+    "nombre": "COSTALES USADOS X UND",
+    "precio": 800
+  },
+  {
+    "nombre": "DISCO PARA CORTE DE METAL 4 1/2",
+    "precio": 1800.0
+  },
+  {
+    "nombre": "SOGA 10 MM X METRO",
+    "precio": 1000.0
+  },
+  {
+    "nombre": "REMACHOE CIEGO 4-6 (1/8-1/2) X UND",
+    "precio": 75.0
+  },
+  {
+    "nombre": "LIJA AGUA OMEGA #120  X UND",
+    "precio": 1600.0
+  },
+  {
+    "nombre": "REMACHOE CIEGO 6-10 (3/16-3/4) X UND",
+    "precio": 200.0
+  },
+  {
+    "nombre": "LIJA DE AGUA G.180 x UND OMEGA",
+    "precio": 1600.0
+  },
+  {
+    "nombre": "PLASTICO PROTECTOR NEGRO CAL 3 ALTO 1.52  X METRO",
+    "precio": 4000.0
+  },
+  {
+    "nombre": "ABRAZADERA PLASTICA 1/2 DOBLE ALA X UND ( INDIVIDUAL)",
+    "precio": 300.0
+  },
+  {
+    "nombre": "CANTONERA#1 -3/4 PUL- 19 x 19 x 12 mm. x 1.9 mm. X UND",
+    "precio": 300.0
+  },
+  {
+    "nombre": "SOGA 8 MM X METRO",
+    "precio": 800.0
+  },
+  {
+    "nombre": "MASCARILLA DOBLE GRIS ECO X UND",
+    "precio": 1100.0
+  },
+  {
+    "nombre": "ROLLO CARTON CORRUGADO 1.2X 1 METRO",
+    "precio": 2800.0
+  },
+  {
+    "nombre": "ESCUADRA DE REFUERZO 2\" ZINC",
+    "precio": 800.0
+  },
+  {
+    "nombre": "TORNILLO PARA DRYWALL # 8 X3 AUTOPERFORANTE X 1 UND",
+    "precio": 100.0
+  },
+  {
+    "nombre": "TORNILLO AUTOROSCANTE CAB. PAN 8X1 PLEGADIZA X UND",
+    "precio": 90.0
+  },
+  {
+    "nombre": "C-563/CINTA DE ENMASCARAR USO GENERAL(1 x 40 YDS)  XUND",
+    "precio": 5500.0
+  },
+  {
+    "nombre": "SOGA PP 3MM 1/8 CARRETA X METRO",
+    "precio": 200.0
+  },
+  {
+    "nombre": "TORNILLO ESTUFA CA.REDONDA 3/16 X 1/2 X UND",
+    "precio": 80.0
+  },
+  {
+    "nombre": "TORNILLO PARA PLACA DE DRYWALL #6-1 ROSCA FINA X 100 UNDS",
+    "precio": 2400.0
+  },
+  {
+    "nombre": "ABRAZADERA PLASTICA 3/4 UN ALA X UND",
+    "precio": 300.0
+  },
+  {
+    "nombre": "MANGUERA DE CRISTAL 1/4 X METRO",
+    "precio": 800.0
+  },
+  {
+    "nombre": "AMARRA PLASTICA TRANSP 20 CM X UND",
+    "precio": 65.0
+  },
+  {
+    "nombre": "DISOLVENTE VARSOL MEDIA BOTELLA",
+    "precio": 3500.0
+  },
+  {
+    "nombre": "REMACHOE CIEGO 5-4 (5/32-3/8) X UND",
+    "precio": 90.0
+  },
+  {
+    "nombre": "TORNILLO PARA ESTRUCT. DRYWALL #7-7/16 ROSCA FINA X 100 UNDS",
+    "precio": 2200.0
+  },
+  {
+    "nombre": "AEROSOL ULTRA COLOR NEGRO MATE",
+    "precio": 7000.0
+  },
+  {
+    "nombre": "HOJA DE SIERRA NICHOLSON #24 DE HIERRO",
+    "precio": 3700.0
+  },
+  {
+    "nombre": "TORNILLO CABEZA EXTRAPLANA PUNTA BROCA 8X1/2 X 20 UNDS",
+    "precio": 200.0
+  },
+  {
+    "nombre": "GANCHO ANDHESIVO PERM MEDIANO X UND",
+    "precio": 800.0
+  },
+  {
+    "nombre": "CEMENTO ARGOS GRIS 25 KG",
+    "precio": 21000.0
+  },
+  {
+    "nombre": "CANDADO ECONOMICO UNIFER 50 MM",
+    "precio": 4500.0
+  },
+  {
+    "nombre": "CHAZO COLA MARRANO 1/4 X 1 5/8 X UND",
+    "precio": 300.0
+  },
+  {
+    "nombre": "BROCHASIC PROFESIONAL 2",
+    "precio": 4500.0
+  },
+  {
+    "nombre": "CANDADO ECONOMICO UNIFER 60 MM",
+    "precio": 5900.0
+  },
+  {
+    "nombre": "AMARRA PLASTICA TRANSP 10 CM X UND",
+    "precio": 50.0
+  },
+  {
+    "nombre": "C-563/CINTA DE ENMASCARAR USO GENERAL(1 x 20 YDS)  XUND",
+    "precio": 3900.0
+  },
+  {
+    "nombre": "CHAZO PLASTICO PARA CONCRETO 1/4",
+    "precio": 60.0
+  },
+  {
+    "nombre": "BROCHA GOYA PROFESIONAL 2",
+    "precio": 8800.0
+  },
+  {
+    "nombre": "CANDADO ANTICIZALLA DORADA 70 MM UNIFER",
+    "precio": 17000.0
+  },
+  {
+    "nombre": "BROCHA GOYA PROFESIONAL 3",
+    "precio": 14000.0
+  },
+  {
+    "nombre": "TORNILLO AUTOROSCANTE CAB PLANA 6X1  1/4 PLEGADIZA X UND",
+    "precio": 60.0
+  },
+  {
+    "nombre": "RODILLO FIJO TODO USO SIC EN FELPA 9",
+    "precio": 9900.0
+  },
+  {
+    "nombre": "ESTOPA X 200 GRAMOS GOYA",
+    "precio": 5500.0
+  },
+  {
+    "nombre": "TORNILLO PARA  ESTRUCT. DRYWALL #7-7/16 ROSCA FINA X 50 UNDS",
+    "precio": 1200.0
+  },
+  {
+    "nombre": "SOPORTE MURO CAFE 1\" X UND",
+    "precio": 900.0
+  },
+  {
+    "nombre": "AMARRA PLASTICA TRANSP 20 CM X UND",
+    "precio": 60.0
+  },
+  {
+    "nombre": "CHAZO EXPANSIVO PARA CONCRETO 3/8X2  1/2 X UND",
+    "precio": 1300.0
+  },
+  {
+    "nombre": "RODILLO HILO EPOXICO BLANCO GOYA 9",
+    "precio": 16000.0
+  },
+  {
+    "nombre": "TORNILLO AUTOROSCANTE CAB. PLANA 6X1 PLEGADIZA X UND",
+    "precio": 50.0
+  },
+  {
+    "nombre": "TORNILLO ESTUFA CAB.REDONDA 3/16 X  1  1/2 X UND",
+    "precio": 150.0
+  },
+  {
+    "nombre": "DISOLVENTE VARSOL BOTELLA",
+    "precio": 6500.0
+  },
+  {
+    "nombre": "PROM CINTA ENMASCARAR USO GENERAL 1/2X40 MT",
+    "precio": 3000.0
+  },
+  {
+    "nombre": "DISOLVENTE VARSOL GALÓN",
+    "precio": 24000.0
+  },
+  {
+    "nombre": "LIJA ABRACOL ROJA N120",
+    "precio": 1700.0
+  },
+  {
+    "nombre": "TORNILLO PARA DRYWALL #8 X 1  1/2 ZIN NEGRO X 10 UNDS",
+    "precio": 200.0
+  },
+  {
+    "nombre": "TORNILLO PARA PLACA DE DRYWALL #6-1 ROSCA FINA X 50 UNDS",
+    "precio": 1400.0
+  },
+  {
+    "nombre": "TORNILLO ESTUFA CA.REDONDA 1/4 X 2\" X  UND",
+    "precio": 300.0
+  },
+  {
+    "nombre": "ESPUMA DE LIMPIEZA X UND",
+    "precio": 900.0
+  },
+  {
+    "nombre": "YESO MARAVILLA X 1 KG",
+    "precio": 2500.0
+  },
+  {
+    "nombre": "TUBO CORTINERO CAFÉ X METRO 3/4 (MEDIANO)",
+    "precio": 6000.0
+  },
+  {
+    "nombre": "ADOBE COCO 10X20X40CM 5.5KG 12.5U/M2",
+    "precio": 1950.0
+  },
+  {
+    "nombre": "BLOQUELON 80x23x8 CM MATCO",
+    "precio": 4800.0
+  },
+  {
+    "nombre": "LATA DE ARENA LAVADA DE CONCRETO 25 KG",
+    "precio": 5200.0
+  },
+  {
+    "nombre": "CEMENTO TOPEX 50KG",
+    "precio": 35000.0
+  },
+  {
+    "nombre": "LATA DE ARENA LAVADA DE PEGA 25 KG",
+    "precio": 3500.0
+  },
+  {
+    "nombre": "ARANDELA PLANA ZINCADA 1/4 X PAR",
+    "precio": 50.0
+  },
+  {
+    "nombre": "LATA DE ARENA LAVADA DE REVOQUE 25 KG",
+    "precio": 4200.0
+  },
+  {
+    "nombre": "CEMENTO GRIS ALION 50KG",
+    "precio": 38000.0
+  },
+  {
+    "nombre": "VARILLA DE 5/8\"",
+    "precio": 42000.0
+  },
+  {
+    "nombre": "VARILLA DE 1/2\"",
+    "precio": 26000.0
+  },
+  {
+    "nombre": "CEMENTO ARGOS X KILO",
+    "precio": 1800.0
+  },
+  {
+    "nombre": "LATA DE TRITURADO GRUESO",
+    "precio": 5500.0
+  },
+  {
+    "nombre": "CLAVO ACERO LISO 2 1/2IN PAV DIAMETRO 3.0MM X UNIDAD",
+    "precio": 100.0
+  },
+  {
+    "nombre": "ARANDALA PLANA ZINCADA 1/2 X PAR",
+    "precio": 50.0
+  },
+  {
+    "nombre": "LATA DE TRITURADO MENUDO",
+    "precio": 4800.0
+  },
+  {
+    "nombre": "PEGACOR CERAMICO GRIS X KG",
+    "precio": 1700.0
+  },
+  {
+    "nombre": "CEMENTO ARGOS GRIS 50 KG",
+    "precio": 38900.0
+  },
+  {
+    "nombre": "ARANDELA PLANA ZINCADA 3/8 X PAR",
+    "precio": 50.0
+  },
+  {
+    "nombre": "CEMENTO USO GENERAL SAN MARCOS X 50 KG",
+    "precio": 33000.0
+  },
+  {
+    "nombre": "TUERCA HEXAGONAL G2 ZINCADA 3/8-16",
+    "precio": 100.0
+  },
+  {
+    "nombre": "CEMENTO BLANCO CIMSA X 1 KG",
+    "precio": 2500.0
+  },
+  {
+    "nombre": "TUERCA HEXAGONAL G2 ZINCADA 1/4-20 X PAR",
+    "precio": 100.0
+  },
+  {
+    "nombre": "CLAVO ACERO LISO CONCRETO 2IN DIAMETRO 4.3MM X UND",
+    "precio": 200.0
+  },
+  {
+    "nombre": "CLAVO ACERO LISO 1IN PAVONADO DIAMETRO 2.0MM X UNIDAD",
+    "precio": 150.0
+  },
+  {
+    "nombre": "CLAVO ACERO VERTICAL 1IN ALU DIAMETRO 3.0MM X UND",
+    "precio": 100.0
+  },
+  {
+    "nombre": "CLAVO ACERO LISO 3IN PAV DIAMETRO 3.5MM X UND",
+    "precio": 150.0
+  },
+  {
+    "nombre": "CLAVO ACERO LISO 2IN PAV DIAMETRO 3.0MM X UNIDAD",
+    "precio": 100.0
+  },
+  {
+    "nombre": "CLAVO ACERO LISO CONCRETO 1IN DIAMETRO 3.0MM X UND",
+    "precio": 100.0
+  },
+  {
+    "nombre": "VARILLA DE 3/8\"",
+    "precio": 16000.0
+  },
+  {
+    "nombre": "CLAVO ACERO LISO CONCRETO 1IN DIAMETRO 3.0MM X UNIDAD",
+    "precio": 50.0
+  },
+  {
+    "nombre": "BLOQUE CEMENTO 15X20X40CM UND",
+    "precio": 4000.0
+  },
+  {
+    "nombre": "POLISOMBRA 80% 1M X 4.0 NEGRA ANTI U.V",
+    "precio": 3500.0
+  },
+  {
+    "nombre": "ADOBE TOLETE 15X20X40CM",
+    "precio": 2600.0
+  },
+  {
+    "nombre": "TEJA DE BARRO COLONIAL 40X20 CM",
+    "precio": 2600.0
+  },
+  {
+    "nombre": "AMARRE TEJA TAPA METÁLICA 26CM CAL 18 X 10 UND",
+    "precio": 1000.0
+  },
+  {
+    "nombre": "CINTA TAPAGOTERAS ADHESIVA 30CM ANCHO X METROS ASFALTECH",
+    "precio": 12000.0
+  },
+  {
+    "nombre": "CLAVO ACERO LISO CONCRETO 3IN DIAMETRO 4.3MM X UNIDAD",
+    "precio": 300.0
+  },
+  {
+    "nombre": "PUNTILLA LISA CC 1 INLB CON CABEZA DIAMETRO 1.65MM",
+    "precio": 30.0
+  },
+  {
+    "nombre": "CEMENTO ARGOS X KILO",
+    "precio": 1800.0
+  },
+  {
+    "nombre": "ARANDELA PLANA ZINCADA 5/16 X PAR",
+    "precio": 50.0
+  },
+  {
+    "nombre": "CAOLIN CORONA 25KG",
+    "precio": 41000.0
+  },
+  {
+    "nombre": "BLOQUE DE CEMENTO 12X20",
+    "precio": 2700.0
+  },
+  {
+    "nombre": "VARILLA A.R. 1/4\"",
+    "precio": 8000.0
+  },
+  {
+    "nombre": "CLAVO ACERO LISO CONCRETO 2 1/2IN DIAMETRO 4.3MM X UNIDAD",
+    "precio": 200.0
+  },
+  {
+    "nombre": "PEGACOR CERAMICO GRIS 25KG",
+    "precio": 39900.0
+  },
+  {
+    "nombre": "PUNTILLA LISA CC 3IN LB DIAMETRO 3.7MM",
+    "precio": 6900.0
+  },
+  {
+    "nombre": "CEMENTO GRIS ALION 50KG",
+    "precio": 38000.0
+  },
+  {
+    "nombre": "CABLE DUPLEX  2 x 16IMPORTADO X METRO",
+    "precio": 2000.0
+  },
+  {
+    "nombre": "BOMBILLO LED 9W UNIFER UND",
+    "precio": 5000.0
+  },
+  {
+    "nombre": "BOMBILLO LED 12W UNIFER UND",
+    "precio": 6000.0
+  },
+  {
+    "nombre": "CABLE N12 NEGRO X 1 METRO",
+    "precio": 2800.0
+  },
+  {
+    "nombre": "CABLE N12 X METRO  BLANCO",
+    "precio": 2800.0
+  },
+  {
+    "nombre": "TOMA DOBLE ECO PRESIONM UNIFER X UND",
+    "precio": 8000.0
+  },
+  {
+    "nombre": "CABLE N12  X METRO ROJO",
+    "precio": 2800.0
+  },
+  {
+    "nombre": "CURVA ELECTRICA 90 GRADOS DE 1/2",
+    "precio": 1200.0
+  },
+  {
+    "nombre": "CONECTOR PARA CABLE AMARILLO HALUX X UND",
+    "precio": 500.0
+  },
+  {
+    "nombre": "INTERRUPTOR SENCILLO UNIFER X UND",
+    "precio": 5000.0
+  },
+  {
+    "nombre": "PANEL DE INCRUSTAR UNIFER 18W X UND",
+    "precio": 8000.0
+  },
+  {
+    "nombre": "BOMBILLO LED 20 W UNIFER",
+    "precio": 8900.0
+  },
+  {
+    "nombre": "ADAPT TERM CONDUIT 1/2",
+    "precio": 500.0
+  },
+  {
+    "nombre": "TAPA PLASTICA PARA TOMA DOBLE LEVIGTON X UND",
+    "precio": 1000.0
+  },
+  {
+    "nombre": "CAJA CONDUIT SENC 103X60X45MM",
+    "precio": 2100.0
+  },
+  {
+    "nombre": "BOMBILLO LED 9W LUZ CALIDA UNIFER",
+    "precio": 3500.0
+  },
+  {
+    "nombre": "PUNTILLA LISA CC 1 1/2IN LB DIAMETRO 2.20MM X UND",
+    "precio": 80.0
+  },
+  {
+    "nombre": "TOMA + INTERRUPTOR ECO UNIFER X UND",
+    "precio": 6000.0
+  },
+  {
+    "nombre": "CABLE ENCAUCHETADO 2 X 12 AWG NEGRO",
+    "precio": 1000.0
+  },
+  {
+    "nombre": "PANEL DE SOBREPONER 18 W UNIFER",
+    "precio": 12000.0
+  },
+  {
+    "nombre": "TUBO ELECTRICO CONDUIT LISO 1/2 3M PAVCO",
+    "precio": 5500.0
+  },
+  {
+    "nombre": "CINTA AISLANTE ELECTRICA UNIFER X 5 METROS X 18 MM",
+    "precio": 2500.0
+  },
+  {
+    "nombre": "INTERRUPTOR DOBLE UNIFER X UND",
+    "precio": 8000.0
+  },
+  {
+    "nombre": "CANALETA PLÁSTICA INDUMA 20X12 UND",
+    "precio": 9900.0
+  },
+  {
+    "nombre": "GRAPA CONDUIT 1\" DOBLE ALA MÉTALICA",
+    "precio": 390.0
+  },
+  {
+    "nombre": "PANEL DE SOBREPONER 12 W UNIFER",
+    "precio": 6000.0
+  },
+  {
+    "nombre": "PROM DESTORNILLADOR GOLPEADOR AMARILLO X 6 UND",
+    "precio": 4000.0
+  },
+  {
+    "nombre": "ESTUCOR BLANCO X KILO",
+    "precio": 3000.0
+  },
+  {
+    "nombre": "ESTUCOR BLANCO X BULTO 25 KG",
+    "precio": 49900.0
+  },
+  {
+    "nombre": "THINNER CORRIENTE MEDIA BOTELLA",
+    "precio": 2800.0
+  },
+  {
+    "nombre": "ESTUCO PRESIONPARADO CORONA BOLSA DE 1 KG",
+    "precio": 5500.0
+  },
+  {
+    "nombre": "SILICONA ELASTIKA BLANCA CORONA TUBO  300 CC",
+    "precio": 18900.0
+  },
+  {
+    "nombre": "MASILLA PARA DRYWALL SUPERMASTICK X CANECA 28 KL",
+    "precio": 65000.0
+  },
+  {
+    "nombre": "AEROSOL BLANCO MATE ULTRA COLOR 400 ML",
+    "precio": 8000.0
+  },
+  {
+    "nombre": "THINNER CORRIENTE BOTELLA",
+    "precio": 4800.0
+  },
+  {
+    "nombre": "ESTUCOR EN POLVO BLANCO X 5 KG",
+    "precio": 16900.0
+  },
+  {
+    "nombre": "AEROSOL ULTRA COLOR NEGRO BTE 400 G",
+    "precio": 8000.0
+  },
+  {
+    "nombre": "THINNER CORRIENTE GARRAFA",
+    "precio": 18000.0
+  },
+  {
+    "nombre": "PINTURA PREMIUM TIPO 2 ALGRECO - BOLSA GAL",
+    "precio": 39900.0
+  },
+  {
+    "nombre": "ESTUCO PLÁSTICO CORONA TEXTUCO CUÑETE 28 KG",
+    "precio": 63500.0
+  },
+  {
+    "nombre": "PINTURA PREMIUM TIPO 2 ALGRECO BLANCO CUÑETE 5 GAL",
+    "precio": 210000.0
+  },
+  {
+    "nombre": "CODO PRESION 90 1/2 SCH40",
+    "precio": 500.0
+  },
+  {
+    "nombre": "UNION PRESION 1/2 SCH40",
+    "precio": 500.0
+  },
+  {
+    "nombre": "ADAPT CON ROSCA MACHO 1/2 SCH40",
+    "precio": 500.0
+  },
+  {
+    "nombre": "ADAPT CON ROSCA MACHO 3/4 SCH40",
+    "precio": 1077.0
+  },
+  {
+    "nombre": "TEE DE PRESION 1/2 SCH40",
+    "precio": 1136.0
+  },
+  {
+    "nombre": "TAPON DE PRESION  1/2 SCH40 SOLD",
+    "precio": 500.0
+  },
+  {
+    "nombre": "CODO DE 90 GRADOS 1/2 CPVC HOTPRO",
+    "precio": 1900.0
+  },
+  {
+    "nombre": "CODO SANITARIO DE 90  GRADOS 2\" CAMPANA POR CAMPANA",
+    "precio": 4434.0
+  },
+  {
+    "nombre": "CODO SANITARIO DE 90 GRADOS 1,1/2 CAMPANA POR CAMPANA",
+    "precio": 2600.0
+  },
+  {
+    "nombre": "CINTA TEFLON 1/2 X 10 MTS UNIFER",
+    "precio": 700.0
+  },
+  {
+    "nombre": "MANGUERA DE AGUA DE 1/2 X METRO",
+    "precio": 4800.0
+  },
+  {
+    "nombre": "ADAPTADOR ROSCADO HEMBRA DE 1/2\"",
+    "precio": 672.0
+  },
+  {
+    "nombre": "UNION SANITARIA DE 2\"",
+    "precio": 2200.0
+  },
+  {
+    "nombre": "TUBO LISO PRESIONSION 1/2 RDE9 X 1 METRO",
+    "precio": 5200.0
+  },
+  {
+    "nombre": "TUBO SAN 1,1/2 X METRO",
+    "precio": 13400.0
+  },
+  {
+    "nombre": "TEE SANITARIA DE 3\"",
+    "precio": 7200.0
+  },
+  {
+    "nombre": "TUBO LISO PRESION 1/2 RDE9 6M",
+    "precio": 31228.0
+  },
+  {
+    "nombre": "SOLDADURA O PEGA PARA PVC LOW VOC 1/128 GAL",
+    "precio": 4500.0
+  },
+  {
+    "nombre": "ADAPTADOR  ROSCADO MACHOO 1/2 CPVC HOTPRO",
+    "precio": 1500.0
+  },
+  {
+    "nombre": "CODO SANITARIO 45 GRADOS DE 1,1/2 CAMPANA POR CAMPANA",
+    "precio": 4376.0
+  },
+  {
+    "nombre": "UNION SANITARIO 1  1/2\"",
+    "precio": 2300.0
+  },
+  {
+    "nombre": "CODO SANITARIOITARIOITARIO 90  3\" CAMPANA POR CAMPANA",
+    "precio": 7000.0
+  },
+  {
+    "nombre": "TUBO SANITARIOITARIO 3 LINEA NOVATEC  X METRO",
+    "precio": 24833.0
+  },
+  {
+    "nombre": "TUBO LISO 1/2 CPVC HOTPRO RDE11 3M",
+    "precio": 19000.0
+  },
+  {
+    "nombre": "VIGUETA PARA DRYWALL DE  0.35",
+    "precio": 5500.0
+  },
+  {
+    "nombre": "OMEGA PARA CIELO EN DRYWALL DE  0.35",
+    "precio": 4900.0
+  },
+  {
+    "nombre": "ANGULO PARA DRYWALL DE 0.35",
+    "precio": 3500.0
+  },
+  {
+    "nombre": "PLACA DE DRYWALL 1/2",
+    "precio": 44800.0
+  },
+  {
+    "nombre": "PARAL PARA ESTRUCTURA DE DRYWALL BASE 6 X 0.35",
+    "precio": 7800.0
+  },
+  {
+    "nombre": "CANAL PARA ESTRUCTURA DE DRYWALL BASE 6 X 0.35",
+    "precio": 6600.0
+  },
+  {
+    "nombre": "ANGULO PERFORADO PARA DRYWALL",
+    "precio": 6000.0
+  },
+  {
+    "nombre": "PLACA SUPERBOARD DE 6 MILIMETROS",
+    "precio": 61500.0
+  },
+  {
+    "nombre": "MASILLA PARA DRYWALL SUPERMASTICK X GALON",
+    "precio": 23000.0
+  },
+  {
+    "nombre": "PLACA SUPERBOARD DE 8 MILIMETROS",
+    "precio": 85000.0
+  },
+  {
+    "nombre": "ESQUINERO PLÁSTICO X  UND  2.4 METROS",
+    "precio": 4000.0
+  }
+]
