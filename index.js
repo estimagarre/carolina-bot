@@ -90,7 +90,7 @@ function generarResumenPedido(pedido) {
 const app = express();
 app.use(express.json());
 
-/** ✅ VALIDACIÓN DE WEBHOOK para Gupshup (formato Meta v3) **/
+/** ✅ VALIDACIÓN DE WEBHOOK para Gupshup (formato Meta v3) */
 app.get("/webhook", (req, res) => {
   const verifyToken = process.env.VERIFY_TOKEN;
   const mode = req.query["hub.mode"];
@@ -110,9 +110,21 @@ app.get("/webhook", (req, res) => {
   }
 });
 
-/** 🚀 PROCESAMIENTO PRINCIPAL DE MENSAJES */
+/** 🚀 PROCESAMIENTO PRINCIPAL DE MENSAJES + RESPUESTA DE VERIFICACIÓN GUPSHUP */
 app.post("/webhook", async (req, res) => {
   try {
+    // 🔐 Respuesta para la verificación del webhook Gupshup (evita error de autenticación)
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(200).send("OK");
+    }
+
+    const { type } = req.body;
+    if (type === "url_verification" || req.body["hub.challenge"]) {
+      console.log("✅ Verificación recibida desde Gupshup");
+      return res.status(200).send(req.body["hub.challenge"] || "VERIFICADO");
+    }
+
+    // ✅ Lógica del bot
     const entry = req.body.entry?.[0];
     const changes = entry?.changes?.[0];
     const value = changes?.value;
@@ -172,12 +184,12 @@ app.post("/webhook", async (req, res) => {
     return res.json({ reply: respuesta });
 
   } catch (error) {
-    console.error("Error en webhook:", error.message);
+    console.error("❌ Error en webhook:", error.message);
     return res.sendStatus(500);
   }
 });
 
-/** ✅ Ruta raíz para evitar error 404 al acceder al dominio */
+/** ✅ Ruta raíz */
 app.get("/", (req, res) => {
   res.send("✅ Bot funcionando correctamente.");
 });
