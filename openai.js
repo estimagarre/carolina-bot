@@ -1,26 +1,20 @@
-// openai.js (versión actualizada compatible con openai@4.x.x)
-
+// openai.js (versión para OpenAI 4.x)
 const OpenAI = require("openai");
 require("dotenv").config();
 
-// Instanciar la API de OpenAI
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Historial de conversaciones por número
 const historial = {};
 
-// Función principal para obtener respuestas de la IA
 async function obtenerRespuestaIA(mensajes, numero) {
   if (!historial[numero]) {
     historial[numero] = [];
   }
 
-  // Guardar y mantener máximo 10 mensajes anteriores
   historial[numero] = [...historial[numero], ...mensajes].slice(-10);
 
-  // Llamar a la API de OpenAI
   const respuesta = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: historial[numero],
@@ -28,8 +22,6 @@ async function obtenerRespuestaIA(mensajes, numero) {
   });
 
   const mensajeIA = respuesta.choices[0].message.content;
-
-  // Agregar respuesta al historial
   historial[numero].push({ role: "assistant", content: mensajeIA });
 
   return mensajeIA;
