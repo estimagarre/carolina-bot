@@ -1,6 +1,10 @@
-const express = require("express");
-const fs = require("fs");
-const { obtenerRespuestaIA } = require("./openai");
+// index.js (versión corregida usando ESM)
+import express from "express";
+import fs from "fs";
+import { obtenerRespuestaIA } from "./openai.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const productos = JSON.parse(fs.readFileSync("productos_reformante.json", "utf8"));
 const historialClientes = {};
@@ -132,7 +136,7 @@ app.post("/webhook", async (req, res) => {
         respuesta = generarResumenPedido(pedidosAcumulados[numero]);
       } else {
         historialClientes[numero].push({ role: "user", content: texto });
-        respuesta = await obtenerRespuestaIA(historialClientes[numero]);
+        respuesta = await obtenerRespuestaIA(historialClientes[numero], numero);
       }
     }
   }
