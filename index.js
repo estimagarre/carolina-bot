@@ -177,6 +177,11 @@ app.post("/webhook", async (req, res) => {
   }
 });
 
+/** ✅ Ruta raíz para evitar error 404 al acceder al dominio */
+app.get("/", (req, res) => {
+  res.send("✅ Bot funcionando correctamente.");
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor funcionando en el puerto ${PORT}`);
