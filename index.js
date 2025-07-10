@@ -1,9 +1,12 @@
 import express from "express";
 import fs from "fs";
-import { obtenerRespuestaIA } from "./openai.js";
 import dotenv from "dotenv";
+import { obtenerRespuestaIA } from "./openai.js";
 
 dotenv.config();
+
+const app = express();
+app.use(express.json());
 
 const productos = JSON.parse(fs.readFileSync("productos_reformante.json", "utf8"));
 const historialClientes = {};
@@ -87,109 +90,83 @@ function generarResumenPedido(pedido) {
   return `🤲 Cotización actual:\n${lineas.join("\n")}\n💰 Total con IVA incluido: $${total.toLocaleString()}`;
 }
 
-const app = express();
-app.use(express.json());
-
-/** ✅ VALIDACIÓN DE WEBHOOK para Gupshup (formato Meta v3) */
+/** ✅ Validación del webhook (opcional si usas Gupshup App) */
 app.get("/webhook", (req, res) => {
   const verifyToken = process.env.VERIFY_TOKEN;
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
   const challenge = req.query["hub.challenge"];
-
-  if (mode && token) {
-    if (mode === "subscribe" && token === verifyToken) {
-      console.log("✅ Webhook verificado correctamente.");
-      return res.status(200).send(challenge);
-    } else {
-      console.log("❌ Error de verificación del token.");
-      return res.sendStatus(403);
-    }
-  } else {
-    return res.sendStatus(400);
+  if (mode && token && mode === "subscribe" && token === verifyToken) {
+    return res.status(200).send(challenge);
   }
+  return res.sendStatus(403);
 });
 
-/** 🚀 PROCESAMIENTO PRINCIPAL DE MENSAJES + RESPUESTA DE VERIFICACIÓN GUPSHUP */
+/** 🚀 Webhook principal que recibe los mensajes */
 app.post("/webhook", async (req, res) => {
   try {
-    // 🔐 Respuesta para la verificación del webhook Gupshup (evita error de autenticación)
     if (!req.body || Object.keys(req.body).length === 0) {
       return res.status(200).send("OK");
     }
 
-    const { type } = req.body;
-    if (type === "url_verification" || req.body["hub.challenge"]) {
-      console.log("✅ Verificación recibida desde Gupshup");
-      return res.status(200).send(req.body["hub.challenge"] || "VERIFICADO");
-    }
+    const payload = req.body;
+    const message = payload.message?.text || "";
+    const phone = payload.sender?.phone || payload.sender || "";
 
-    // ✅ Lógica del bot
-    const entry = req.body.entry?.[0];
-    const changes = entry?.changes?.[0];
-    const value = changes?.value;
-    const mensaje = value?.messages?.[0];
+    if (!message || !phone) return res.sendStatus(200);
 
-    if (!mensaje) return res.sendStatus(200);
+    if (!historialClientes[phone]) historialClientes[phone] = [];
+    if (!pedidosAcumulados[phone]) pedidosAcumulados[phone] = [];
+    if (!yaCotizado[phone]) yaCotizado[phone] = [];
+    if (!estadoCliente[phone]) estadoCliente[phone] = "inicio";
 
-    const numero = mensaje.from;
-    const textoOriginal = mensaje.text?.body || "";
-
-    if (!numero || !textoOriginal) return res.sendStatus(200);
-
-    if (!historialClientes[numero]) historialClientes[numero] = [];
-    if (!pedidosAcumulados[numero]) pedidosAcumulados[numero] = [];
-    if (!yaCotizado[numero]) yaCotizado[numero] = [];
-    if (!estadoCliente[numero]) estadoCliente[numero] = "inicio";
-
-    const texto = corregirErroresOrto(textoOriginal);
+    const texto = corregirErroresOrto(message);
     const textoClave = limpiarTexto(texto);
-    const yaRespondido = yaCotizado[numero].includes(textoClave);
-    const ultimoMensaje = historialClientes[numero].slice(-1)[0]?.content?.trim().toLowerCase();
+    const yaRespondido = yaCotizado[phone].includes(textoClave);
+    const ultimoMensaje = historialClientes[phone].slice(-1)[0]?.content?.trim().toLowerCase();
     if (textoClave === ultimoMensaje) return res.sendStatus(200);
 
     let respuesta = "";
 
     if (/(me los despacha|envíemelos|tráemelos|enviame|mandalos)/i.test(texto)) {
-      if (pedidosAcumulados[numero].length > 0) {
-        estadoCliente[numero] = "esperando_comprobante";
+      if (pedidosAcumulados[phone].length > 0) {
+        estadoCliente[phone] = "esperando_comprobante";
         respuesta = "Apenas verifiquemos el comprobante de pago, organizamos el pedido. ¡Puedes enviarlo cuando gustes!";
       }
     } else if (/(quiero comprar|dame la cuenta|cómo pago|necesito pagar|ya transferí|transferencia)/i.test(texto)) {
-      estadoCliente[numero] = "esperando_comprobante";
+      estadoCliente[phone] = "esperando_comprobante";
       respuesta = datosCuenta;
-    } else if (estadoCliente[numero] === "pedido_confirmado") {
+    } else if (estadoCliente[phone] === "pedido_confirmado") {
       respuesta = "Ya tenemos tu pedido confirmado. Si necesitas algo más, aquí estoy.";
     } else {
       const sugerencia = sugerirOpcionesSiProductoGenerico(texto);
       if (sugerencia) {
-        historialClientes[numero].push({ role: "assistant", content: sugerencia });
+        historialClientes[phone].push({ role: "assistant", content: sugerencia });
         respuesta = sugerencia;
       } else {
         const infoProductos = analizarProductoDesdeTexto(texto);
         if (infoProductos && !yaRespondido) {
-          const nombresExistentes = new Set(pedidosAcumulados[numero].map(p => p.nombre));
+          const nombresExistentes = new Set(pedidosAcumulados[phone].map(p => p.nombre));
           const nuevosFiltrados = infoProductos.filter(p => !nombresExistentes.has(p.nombre));
-          pedidosAcumulados[numero].push(...nuevosFiltrados);
-          yaCotizado[numero].push(textoClave);
-          respuesta = generarResumenPedido(pedidosAcumulados[numero]);
+          pedidosAcumulados[phone].push(...nuevosFiltrados);
+          yaCotizado[phone].push(textoClave);
+          respuesta = generarResumenPedido(pedidosAcumulados[phone]);
         } else {
-          historialClientes[numero].push({ role: "user", content: texto });
-          respuesta = await obtenerRespuestaIA(historialClientes[numero], numero);
+          historialClientes[phone].push({ role: "user", content: texto });
+          respuesta = await obtenerRespuestaIA(historialClientes[phone], phone);
         }
       }
     }
 
-    historialClientes[numero].push({ role: "assistant", content: respuesta });
+    historialClientes[phone].push({ role: "assistant", content: respuesta });
     return res.json({ reply: respuesta });
-
   } catch (error) {
     console.error("❌ Error en webhook:", error.message);
     return res.sendStatus(500);
   }
 });
 
-/** ✅ Ruta raíz */
+/** ✅ Ruta de prueba */
 app.get("/", (req, res) => {
   res.send("✅ Bot funcionando correctamente.");
 });
