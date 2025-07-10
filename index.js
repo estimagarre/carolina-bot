@@ -1,4 +1,4 @@
-// index.js (versión corregida para Gupshup formato Meta v3)
+// index.js (versión lista para Gupshup Meta v3)
 import express from "express";
 import fs from "fs";
 import { obtenerRespuestaIA } from "./openai.js";
