@@ -1,4 +1,3 @@
-// index.js (versión corregida para Gupshup formato Meta v3)
 import express from "express";
 import fs from "fs";
 import { obtenerRespuestaIA } from "./openai.js";
@@ -91,6 +90,27 @@ function generarResumenPedido(pedido) {
 const app = express();
 app.use(express.json());
 
+/** ✅ VALIDACIÓN DE WEBHOOK para Gupshup (formato Meta v3) **/
+app.get("/webhook", (req, res) => {
+  const verifyToken = process.env.VERIFY_TOKEN;
+  const mode = req.query["hub.mode"];
+  const token = req.query["hub.verify_token"];
+  const challenge = req.query["hub.challenge"];
+
+  if (mode && token) {
+    if (mode === "subscribe" && token === verifyToken) {
+      console.log("✅ Webhook verificado correctamente.");
+      return res.status(200).send(challenge);
+    } else {
+      console.log("❌ Error de verificación del token.");
+      return res.sendStatus(403);
+    }
+  } else {
+    return res.sendStatus(400);
+  }
+});
+
+/** 🚀 PROCESAMIENTO PRINCIPAL DE MENSAJES */
 app.post("/webhook", async (req, res) => {
   try {
     const entry = req.body.entry?.[0];
