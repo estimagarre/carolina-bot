@@ -2,8 +2,8 @@
   "name": "carolina-bot",
   "version": "1.0.0",
   "description": "Bot IA conectado con Gupshup y OpenAI",
-  "main": "index.js",
   "type": "module",
+  "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
