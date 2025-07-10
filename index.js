@@ -121,13 +121,13 @@ app.post("/webhook", async (req, res) => {
     if (/(me los despacha|envíemelos|tráemelos|enviame|mandalos)/i.test(texto)) {
       if (pedidosAcumulados[numero].length > 0) {
         estadoCliente[numero] = "esperando_comprobante";
-        respuesta = "🚚 Apenas verifiquemos el comprobante de pago, organizamos el pedido. ¡Puedes enviarlo cuando gustes!";
+        respuesta = "Apenas verifiquemos el comprobante de pago, organizamos el pedido. ¡Puedes enviarlo cuando gustes!";
       }
     } else if (/(quiero comprar|dame la cuenta|cómo pago|necesito pagar|ya transferí|transferencia)/i.test(texto)) {
       estadoCliente[numero] = "esperando_comprobante";
       respuesta = datosCuenta;
     } else if (estadoCliente[numero] === "pedido_confirmado") {
-      respuesta = "✅ Ya tenemos tu pedido confirmado. Si necesitas algo más, aquí estoy.";
+      respuesta = "Ya tenemos tu pedido confirmado. Si necesitas algo más, aquí estoy.";
     } else {
       const sugerencia = sugerirOpcionesSiProductoGenerico(texto);
       if (sugerencia) {
@@ -150,5 +150,14 @@ app.post("/webhook", async (req, res) => {
 
     historialClientes[numero].push({ role: "assistant", content: respuesta });
     return res.json({ reply: respuesta });
+
   } catch (error) {
-    console.error("❌ Error
+    console.error("Error en webhook:", error.message);
+    return res.sendStatus(500);
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor funcionando en el puerto ${PORT}`);
+});
