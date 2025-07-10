@@ -1,35 +1,38 @@
-// openai.js (usando solo la API de OpenAI sin Baileys ni QR)
+// openai.js (versión actualizada compatible con openai@4.x.x)
 
-const { Configuration, OpenAIApi } = require("openai");
+const OpenAI = require("openai");
 require("dotenv").config();
 
-const configuration = new Configuration({
+// Instanciar la API de OpenAI
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const openai = new OpenAIApi(configuration);
-
-// Historial de conversaciones en memoria (puedes adaptar a base de datos si deseas)
+// Historial de conversaciones por número
 const historial = {};
 
-// Función principal para obtener respuestas
+// Función principal para obtener respuestas de la IA
 async function obtenerRespuestaIA(mensajes, numero) {
   if (!historial[numero]) {
     historial[numero] = [];
   }
 
-  historial[numero] = [...historial[numero], ...mensajes].slice(-10); // Máximo 10 últimos intercambios
+  // Guardar y mantener máximo 10 mensajes anteriores
+  historial[numero] = [...historial[numero], ...mensajes].slice(-10);
 
-  const response = await openai.createChatCompletion({
+  // Llamar a la API de OpenAI
+  const respuesta = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: historial[numero],
     temperature: 0.7,
   });
 
-  const respuesta = response.data.choices[0].message.content;
-  historial[numero].push({ role: 'assistant', content: respuesta });
+  const mensajeIA = respuesta.choices[0].message.content;
 
-  return respuesta;
+  // Agregar respuesta al historial
+  historial[numero].push({ role: "assistant", content: mensajeIA });
+
+  return mensajeIA;
 }
 
 module.exports = { obtenerRespuestaIA };
