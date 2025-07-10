@@ -1,13 +1,15 @@
-// openai.js (versión para OpenAI 4.x)
-const OpenAI = require("openai");
-require("dotenv").config();
+import OpenAI from "openai";
+import dotenv from "dotenv";
+dotenv.config();
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+// Historial de conversación
 const historial = {};
 
+// Función para obtener respuesta de la IA
 async function obtenerRespuestaIA(mensajes, numero) {
   if (!historial[numero]) {
     historial[numero] = [];
@@ -27,4 +29,5 @@ async function obtenerRespuestaIA(mensajes, numero) {
   return mensajeIA;
 }
 
-module.exports = { obtenerRespuestaIA };
+// ✅ Exportación compatible con ES Modules
+export { obtenerRespuestaIA };
