@@ -90,7 +90,7 @@ function generarResumenPedido(pedido) {
   return `🤲 Cotización actual:\n${lineas.join("\n")}\n💰 Total con IVA incluido: $${total.toLocaleString()}`;
 }
 
-/** ✅ Validación del webhook (opcional si usas Gupshup App) */
+/** ✅ Validación del webhook */
 app.get("/webhook", (req, res) => {
   const verifyToken = process.env.VERIFY_TOKEN;
   const mode = req.query["hub.mode"];
@@ -106,6 +106,7 @@ app.get("/webhook", (req, res) => {
 app.post("/webhook", async (req, res) => {
   try {
     if (!req.body || Object.keys(req.body).length === 0) {
+      console.log("❌ Cuerpo vacío recibido.");
       return res.status(200).send("OK");
     }
 
@@ -113,7 +114,14 @@ app.post("/webhook", async (req, res) => {
     const message = payload.message?.text || "";
     const phone = payload.sender?.phone || payload.sender || "";
 
-    if (!message || !phone) return res.sendStatus(200);
+    console.log("📥 MENSAJE RECIBIDO:");
+    console.log("Número:", phone);
+    console.log("Mensaje:", message);
+
+    if (!message || !phone) {
+      console.log("❌ Falta mensaje o número.");
+      return res.sendStatus(200);
+    }
 
     if (!historialClientes[phone]) historialClientes[phone] = [];
     if (!pedidosAcumulados[phone]) pedidosAcumulados[phone] = [];
@@ -124,7 +132,10 @@ app.post("/webhook", async (req, res) => {
     const textoClave = limpiarTexto(texto);
     const yaRespondido = yaCotizado[phone].includes(textoClave);
     const ultimoMensaje = historialClientes[phone].slice(-1)[0]?.content?.trim().toLowerCase();
-    if (textoClave === ultimoMensaje) return res.sendStatus(200);
+    if (textoClave === ultimoMensaje) {
+      console.log("⚠️ Mensaje repetido, no se responde.");
+      return res.sendStatus(200);
+    }
 
     let respuesta = "";
 
@@ -159,7 +170,12 @@ app.post("/webhook", async (req, res) => {
     }
 
     historialClientes[phone].push({ role: "assistant", content: respuesta });
+
+    console.log("🤖 RESPUESTA:");
+    console.log(respuesta);
+
     return res.json({ reply: respuesta });
+
   } catch (error) {
     console.error("❌ Error en webhook:", error.message);
     return res.sendStatus(500);
