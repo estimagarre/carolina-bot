@@ -1,3 +1,4 @@
+
 import express from "express";
 import fs from "fs";
 import dotenv from "dotenv";
@@ -26,7 +27,7 @@ function limpiarTexto(texto) {
   return texto
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[̀-ͯ]/g, "")
     .replace(/[^\w\s]/gi, "")
     .trim();
 }
@@ -52,7 +53,7 @@ function analizarProductoDesdeTexto(texto) {
     if (!todasClave) continue;
 
     const cantidadMatch = normalizado.match(
-      new RegExp(`(\\d+)\\s+(de\\s+)?${palabrasClave[0]}`, "i")
+      new RegExp(`(\d+)\s+(de\s+)?${palabrasClave[0]}`, "i")
     );
     const cantidad = cantidadMatch ? parseInt(cantidadMatch[1]) : 1;
 
@@ -90,101 +91,56 @@ function generarResumenPedido(pedido) {
   return `🤲 Cotización actual:\n${lineas.join("\n")}\n💰 Total con IVA incluido: $${total.toLocaleString()}`;
 }
 
-/** ✅ Validación del webhook */
-app.get("/webhook", (req, res) => {
-  const verifyToken = process.env.VERIFY_TOKEN;
-  const mode = req.query["hub.mode"];
-  const token = req.query["hub.verify_token"];
-  const challenge = req.query["hub.challenge"];
-  if (mode && token && mode === "subscribe" && token === verifyToken) {
-    return res.status(200).send(challenge);
-  }
-  return res.sendStatus(403);
-});
-
-/** 🚀 Webhook principal que recibe los mensajes */
 app.post("/webhook", async (req, res) => {
   try {
-    if (!req.body || Object.keys(req.body).length === 0) {
-      console.log("❌ Cuerpo vacío recibido.");
-      return res.status(200).send("OK");
-    }
+    const entry = req.body?.entry?.[0];
+    const changes = entry?.changes?.[0];
+    const value = changes?.value;
+    const message = value?.messages?.[0];
 
-    const payload = req.body;
-    const message = payload.message?.text || "";
-    const phone = payload.sender?.phone || payload.sender || "";
+    if (!message) return res.sendStatus(200);
 
-    console.log("📥 MENSAJE RECIBIDO:");
-    console.log("Número:", phone);
-    console.log("Mensaje:", message);
+    const texto = message.text?.body || "";
+    const phone = message.from;
 
-    if (!message || !phone) {
-      console.log("❌ Falta mensaje o número.");
-      return res.sendStatus(200);
-    }
+    console.log("📩 Mensaje recibido:", texto, "de", phone);
+
+    if (!texto || !phone) return res.sendStatus(200);
 
     if (!historialClientes[phone]) historialClientes[phone] = [];
     if (!pedidosAcumulados[phone]) pedidosAcumulados[phone] = [];
     if (!yaCotizado[phone]) yaCotizado[phone] = [];
     if (!estadoCliente[phone]) estadoCliente[phone] = "inicio";
 
-    const texto = corregirErroresOrto(message);
-    const textoClave = limpiarTexto(texto);
-    const yaRespondido = yaCotizado[phone].includes(textoClave);
-    const ultimoMensaje = historialClientes[phone].slice(-1)[0]?.content?.trim().toLowerCase();
-    if (textoClave === ultimoMensaje) {
-      console.log("⚠️ Mensaje repetido, no se responde.");
-      return res.sendStatus(200);
-    }
+    const textoCorregido = corregirErroresOrto(texto);
+    const textoClave = limpiarTexto(textoCorregido);
 
     let respuesta = "";
 
-    if (/(me los despacha|envíemelos|tráemelos|enviame|mandalos)/i.test(texto)) {
-      if (pedidosAcumulados[phone].length > 0) {
-        estadoCliente[phone] = "esperando_comprobante";
-        respuesta = "Apenas verifiquemos el comprobante de pago, organizamos el pedido. ¡Puedes enviarlo cuando gustes!";
-      }
-    } else if (/(quiero comprar|dame la cuenta|cómo pago|necesito pagar|ya transferí|transferencia)/i.test(texto)) {
-      estadoCliente[phone] = "esperando_comprobante";
-      respuesta = datosCuenta;
-    } else if (estadoCliente[phone] === "pedido_confirmado") {
-      respuesta = "Ya tenemos tu pedido confirmado. Si necesitas algo más, aquí estoy.";
+    const sugerencia = sugerirOpcionesSiProductoGenerico(textoCorregido);
+    if (sugerencia) {
+      respuesta = sugerencia;
     } else {
-      const sugerencia = sugerirOpcionesSiProductoGenerico(texto);
-      if (sugerencia) {
-        historialClientes[phone].push({ role: "assistant", content: sugerencia });
-        respuesta = sugerencia;
+      const infoProductos = analizarProductoDesdeTexto(textoCorregido);
+      if (infoProductos) {
+        pedidosAcumulados[phone].push(...infoProductos);
+        respuesta = generarResumenPedido(pedidosAcumulados[phone]);
       } else {
-        const infoProductos = analizarProductoDesdeTexto(texto);
-        if (infoProductos && !yaRespondido) {
-          const nombresExistentes = new Set(pedidosAcumulados[phone].map(p => p.nombre));
-          const nuevosFiltrados = infoProductos.filter(p => !nombresExistentes.has(p.nombre));
-          pedidosAcumulados[phone].push(...nuevosFiltrados);
-          yaCotizado[phone].push(textoClave);
-          respuesta = generarResumenPedido(pedidosAcumulados[phone]);
-        } else {
-          historialClientes[phone].push({ role: "user", content: texto });
-          respuesta = await obtenerRespuestaIA(historialClientes[phone], phone);
-        }
+        historialClientes[phone].push({ role: "user", content: texto });
+        respuesta = await obtenerRespuestaIA(historialClientes[phone], phone);
       }
     }
 
     historialClientes[phone].push({ role: "assistant", content: respuesta });
 
-    console.log("🤖 RESPUESTA:");
-    console.log(respuesta);
-
-    return res.json({ reply: respuesta });
+    res.json({
+      reply: respuesta
+    });
 
   } catch (error) {
     console.error("❌ Error en webhook:", error.message);
     return res.sendStatus(500);
   }
-});
-
-/** ✅ Ruta de prueba */
-app.get("/", (req, res) => {
-  res.send("✅ Bot funcionando correctamente.");
 });
 
 const PORT = process.env.PORT || 3000;
